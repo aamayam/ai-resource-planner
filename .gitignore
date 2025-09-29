@@ -1,0 +1,7 @@
+# environment vars
+.env
+
+# Python
+test_*.ipynb
+
+*.txt
