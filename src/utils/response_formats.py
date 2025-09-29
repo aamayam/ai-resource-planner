@@ -5,7 +5,7 @@ class DurationValues(BaseModel):
 
 class DurationResponse(BaseModel):
     flag: str = Field(description="'valid' or 'invalid' according to the user input")
-    values: DurationValues
+    value: DurationValues
 
 class ObjectDistributionResponse(BaseModel):
     flag: str = Field(description="'valid' or 'invalid' according to the user input")
@@ -17,7 +17,7 @@ class OffshoreSplitResponse(BaseModel):
 
 class WorkingHoursResponse(BaseModel):
     flag: str = Field(description="'valid' or 'invalid' according to the user input")
-    confirmation: bool = Field(default=True, description="'true' for accepting the default hours, 'false' otherwise")
+    modification: bool = Field(default=True, description="'true' for accepting the default hours, 'false' otherwise")
     value: int = Field(default=160, description="Value for working hour per month")
 
 class TeamParticipationResponse(BaseModel):
