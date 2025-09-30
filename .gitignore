@@ -6,3 +6,4 @@ test_*.ipynb
 __pycache__
 
 *.txt
+test_*.*
