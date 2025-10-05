@@ -5,5 +5,7 @@
 test_*.ipynb
 __pycache__
 
+# test files
 *.txt
 test_*.*
+outputs/

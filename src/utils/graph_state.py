@@ -3,6 +3,8 @@ from typing import TypedDict, Annotated, List
 from operator import add
 from langchain_core.messages import BaseMessage
 from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
+from .plan_structure import PlanStructure
 
 class ProjectStructure(BaseModel):
     duration: int | None = Field(default=None, description="Project duration in months")
@@ -33,8 +35,8 @@ class ProjectStructure(BaseModel):
     
 class GraphState(TypedDict):
     project_id: int
-    llm: ChatOpenAI
+    llm: ChatOpenAI | ChatAnthropic
     project_info: ProjectStructure
-    plan_info: None
+    plan_info: PlanStructure
     summary: str 
     messages: Annotated[list[BaseMessage], add]
