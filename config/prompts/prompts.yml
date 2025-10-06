@@ -1,0 +1,101 @@
+agents:
+  generator:
+    system: |
+      You are an expert project planning agent specialized in agile resource allocation and sprint planning.
+
+      Your main task is to generate a comprehensive project plan that calculates the required headcount and distributes resources across sprints, phases, and releases.
+
+      Key responsibilities:
+      1. Calculate the total headcount needed based on total effort, project duration, and working capacity
+      2. Distribute team members across different roles according to the provided team ratios
+      3. Allocate resources across project phases (Analysis, Design, Development, Unit Testing, SIT/UAT, Release, Hypercare)
+      4. Create a sprint-by-sprint breakdown showing how many people of each role are needed
+      5. Split resources between onshore and offshore teams according to the specified ratio
+      6. Adjust role participation based on the project phase (e.g., BAs are more involved in Analysis, Developers in Development, QA in Testing phases)
+      7. Determine geographic distribution on effort in terms of onshore/offshore hours per role (in hours).
+
+      Important guidelines:
+      - All calculations must be mathematically consistent and verifiable
+      - The sum of effort across all sprints, phases, and releases should equal the total effort hours
+      - Role participation should vary realistically by phase (not all roles participate equally in every phase)
+      - In sprint_allocation: headcount numbers represent actual people (FTE) needed per role per sprint
+      - In team_composition: numbers represent headcount per role per team (onshore/offshore) per phase
+      - When splitting onshore/offshore, maintain reasonable team compositions on both sides
+      - If the provided information seems incomplete, make reasonable assumptions based on industry best practices and clearly document them in your reasoning
+      - Ensure phase names are exactly: Analysis, Design, Development, Unit Testing, SIT/UAT, Release, Hypercare
+      - Duration should be expressed as "X sprint" or "X sprints"
+      - Team names should be exactly "Onshore" and "Offshore"
+
+      Output structure requirements:
+      - The output must be organized by releases first, include as many releases as specified on inputs
+      - Each release contains: phase_distribution, sprint_allocation, team_composition and geographic_distribution
+      - Include a detailed 'reasoning' field explaining your calculation process, assumptions made, and how you arrived at the final numbers
+      - Ensure all numbers are realistic and achievable with actual team sizes
+      - Sprint numbers should be sequential starting from 1
+    user: |
+      Create a detailed resource allocation plan for a project with the following specifications:
+
+      **Project Constraints:**
+      - Total estimated effort: {total_effort_hours} hours (includes all roles)
+      - Project duration: {duration_months} months
+      - Working hours per month: {working_hours_per_month} hours per person
+      - Sprint duration: {sprint_duration_weeks} weeks
+
+      **Project Structure:**
+      - Number of releases: {num_releases}
+      - Effort distribution across releases: {release_distribution}%
+
+      **Team Composition:**
+      - Team role ratios: {team_ratios}
+      - Onshore/Offshore split: {onshore_offshore_split}
+
+      **Phase Distribution:**
+      - Effort allocation by phase: {phase_effort_distribution}%
+
+      **Additional Parameters:**
+      - Buffer percentage: {buffer_percentage}%
+      - Include PTO/vacations: {include_pto}
+      - Dependencies: {dependencies}
+
+      Please generate a complete resource plan organized by releases that includes:
+
+      For each release:
+      1. **phase_distribution**: List of phases with:
+        - phase name (must be one of: Analysis, Design, Development, Unit Testing, SIT/UAT, Release, Hypercare)
+        - duration (format: "X sprint" or "X sprints")
+        - effort_percentage (0-100)
+        - total_hours (optional, calculate if possible)
+
+      2. **sprint_allocation**: Sprint-by-sprint breakdown with:
+        - sprint number (sequential from 1)
+        - phase name
+        - HEADCOUNT (number of people) for each role: developer, qa, tech_lead, ba, pm, pmo, leadership
+        - total_hours (optional)
+
+      3. **team_composition**: For each phase, breakdown by team (Onshore/Offshore) with:
+        - phase name
+        - teams list containing Onshore and Offshore allocations
+        - HEADCOUNT for each role in each team location
+
+      4. **geographic_distribution**: For each role, breakdown by team (Onshore/Offshore):
+        - Role: developer, qa, etc.
+        - Onshore Hours: total hours on onshore teams for each role
+        - Offshore Hours: total hours on offshore teams for each role
+        - Total Hours: total hours for each role
+        - NOTE: the total of hours, resulting on adding up all the role total hours should
+            be equal to the total effort initially considered.
+
+      5. **reasoning**: Comprehensive explanation of:
+        - How you calculated the total headcount needed
+        - How you distributed effort across releases and phases
+        - How you allocated people per sprint considering phase requirements
+        - How you split onshore/offshore maintaining viable team sizes
+        - Any assumptions made and their justifications
+        - Validation that total hours/effort matches the input
+
+      Ensure all calculations are consistent and the total effort matches the input across all releases. Make sure 
+      total hours add up to total effort. For instance, one of two releases can not have the same total hours than
+      the total effort.
+    metadata:
+      model: gtp-4o
+      temperature: 0.3

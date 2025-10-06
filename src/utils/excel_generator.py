@@ -43,7 +43,7 @@ def _write_column_names(ws: Worksheet, column_names: List[str], row: int):
             row=row, 
             column=i+1, 
             ws=ws, 
-            value=column_names[i])
+            value=column_names[i].upper())
 
 def _construct_table(
         key: str, 
@@ -177,17 +177,25 @@ def file_generator(releases: List[ReleaseStructure], output_path: str):
         logger.info("Table created for team composition")
         current_row += 2
 
-        # Writing Geographic Distribution table
-        current_row = _construct_geographic_distribution(
-            roles=list(release.team_composition[0].teams[0].model_dump().keys())[1:],
-            team_list=release.team_composition,
-            start_row=current_row,
+        current_row = _construct_table(
+            key="geographic_distribution",
             ws=ws,
-            hours_per_worker=160  # Adjust based on your sprint duration
+            release=release.model_dump(),
+            start_row=current_row
         )
-        logger.info("Table created for geographic distribution")
+        logger.info("Table Geographic Distribution Created")
+
+        # Writing Geographic Distribution table
+        # current_row = _construct_geographic_distribution(
+        #     roles=list(release.team_composition[0].teams[0].model_dump().keys())[1:],
+        #     team_list=release.team_composition,
+        #     start_row=current_row,
+        #     ws=ws,
+        #     hours_per_worker=160  # Adjust based on your sprint duration
+        # )
+        # logger.info("Table created for geographic distribution")
         
-        current_row += 2
+        # current_row += 2
     
     try:
         # Convert to Path object for better path handling

@@ -38,11 +38,19 @@ class PhaseTeamComposition(BaseModel):
         description="List of teams (onshore/offshore) for this phase"
     )
 
+class GeographicDistribution(BaseModel):
+    role: str = Field(description="The role among the ones used on project")
+    onshore: int = Field(description="Number of total hours for this role on Onshore team")
+    offshore: int = Field(description="Number of total hours for this role on offshore team")
+    total: int = Field(description="Number of total hours for this role resulting on adding up" \
+    "onshore and offshore hours")
+
 class ReleaseStructure(BaseModel):
     release_number: int 
     phase_distribution: List[PhaseDistribution]
     sprint_allocation: List[SprintAllocation]
     team_composition: List[PhaseTeamComposition]
+    geographic_distribution: List[GeographicDistribution]
 
 class PlanStructure(BaseModel):
     releases: List[ReleaseStructure] = Field(

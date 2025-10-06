@@ -35,8 +35,7 @@ class ProjectStructure(BaseModel):
     
 class GraphState(TypedDict):
     project_id: int
-    llm: ChatOpenAI | ChatAnthropic
-    project_info: ProjectStructure
-    plan_info: PlanStructure
+    project_info: ProjectStructure | None
+    plan_info: PlanStructure | None
     summary: str 
     messages: Annotated[list[BaseMessage], add]
