@@ -1,0 +1,9 @@
+What is the confirmed duration of the project (in months)? 
+Do you expect equal object distribution across all 3 releases? 
+Is the 30:70 Onshore-Offshore split acceptable? If not, please suggest a ratio. 
+Are the assumed working hours per month (160 hrs) accurate for your team? 
+Do all roles (Associate to Director) participate equally across all releases? 
+Do you have fixed headcount constraints for any role or region (onshore/offshore)? 
+Should additional buffer (e.g., 10-15%) be added for testing/rework? 
+Are there parallel project dependencies that could impact available capacity? 
+Should we account for holidays or planned PTOs within the 3-month timeline?
