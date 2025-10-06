@@ -97,5 +97,7 @@ agents:
       total hours add up to total effort. For instance, one of two releases can not have the same total hours than
       the total effort.
     metadata:
-      model: gtp-4o
+      models: 
+        openai: gtp-4o
+        anthropic: claude-sonnet-4-20250514
       temperature: 0.3

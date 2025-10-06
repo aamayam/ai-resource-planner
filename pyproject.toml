@@ -12,7 +12,8 @@ dependencies = [
     "langchain-openai (>=0.3.33,<0.4.0)",
     "python-dotenv (>=1.1.1,<2.0.0)",
     "openpyxl (>=3.1.5,<4.0.0)",
-    "langchain-anthropic (>=0.3.21,<0.4.0)"
+    "langchain-anthropic (>=0.3.21,<0.4.0)",
+    "langgraph (>=0.6.8,<0.7.0)"
 ]
 
 

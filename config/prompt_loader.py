@@ -9,4 +9,10 @@ PROMPTS = load_prompts()
 
 def get_prompt(agent_name: str, prompt_type: str = 'user', **kwargs) -> str:
     template = PROMPTS['agents'][agent_name][prompt_type]
-    return template.format(**kwargs)
+    return template.format(**kwargs) 
+
+def get_model(agent: str, client: str = "openai") -> str:
+    return PROMPTS['agents'][agent]['metadata']['models'][client]
+
+def get_temperature(agent: str) -> float:
+    return PROMPTS['agents'][agent]['metadata']['temperature']
