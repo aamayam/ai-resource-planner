@@ -1,5 +1,8 @@
 import yaml
+from config.logger import setup_logger
 from pathlib import Path
+
+logger = setup_logger("PROMPT LOADER")
 
 def load_prompts(path: str = "config/prompts/prompts.yml") -> dict:
     with open(path, 'r', encoding='utf-8') as file:
@@ -9,6 +12,7 @@ PROMPTS = load_prompts()
 
 def get_prompt(agent_name: str, prompt_type: str = 'user', **kwargs) -> str:
     template = PROMPTS['agents'][agent_name][prompt_type]
+    logger.info(f"Loaded {prompt_type} prompt for {agent_name} agent")
     return template.format(**kwargs) 
 
 def get_model(agent: str, client: str = "openai") -> str:

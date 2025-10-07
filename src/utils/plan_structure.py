@@ -56,3 +56,7 @@ class PlanStructure(BaseModel):
     releases: List[ReleaseStructure] = Field(
         description="The actual table information for each release")
     reasoning: str = Field(description="All the explanation of what was created and assumptions made")
+
+class ValidationOutput(BaseModel):
+    is_valid: bool = Field(description="boolean indicating if the plan passes all validations")
+    issues: List[str] = Field(description="list of specific issues found (empty list if valid)")

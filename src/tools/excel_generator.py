@@ -4,7 +4,7 @@ from openpyxl.styles import Font, Border, Alignment, Side
 from openpyxl.worksheet.worksheet import Worksheet
 from typing import List, Any, Tuple, Dict
 from pathlib import Path
-from .plan_structure import ReleaseStructure, PhaseTeamComposition
+from ..utils.plan_structure import ReleaseStructure, PhaseTeamComposition
 from config.logger import setup_logger
 
 logger = setup_logger("ExcelGenerator")

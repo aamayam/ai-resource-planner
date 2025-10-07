@@ -96,8 +96,119 @@ agents:
       Ensure all calculations are consistent and the total effort matches the input across all releases. Make sure 
       total hours add up to total effort. For instance, one of two releases can not have the same total hours than
       the total effort.
+    retry_user: |
+      Generate a detailed project plan for the following data migration project:
+      
+      {project_info_json}
+
+      The previous version you generated is: 
+
+      {plan_info_json}
+
+      # PREVIOUS ATTEMPT HAD ERRORS
+
+      The previous plan (attempt {retry_count}) had the following validation issues:
+      {issues_list}
+
+      Please regenerate the plan fixing ALL these issues. Pay special attention to:
+      - Mathematical accuracy (sums, percentages, totals)
+      - Consistency across all data structures
+      - Proper sprint sequencing and phase assignments
+
+      Generate a corrected plan now.
+    human_feedback: |
+      Generate a detailed project plan for the following data migration project:
+      
+      {project_info_json}
+
+      The previous version you generated is: 
+
+      {plan_info_json}
+
+      # HITL has provided comments on your last output. Here the details
+      {comments}
+
+      Please regenerate the plan considering ALL the comments. Pay special attention to:
+      - Mathematical accuracy (sums, percentages, totals)
+      - Consistency across all data structures
+      - Proper sprint sequencing and phase assignments
+
+      Generate a corrected plan now.
     metadata:
       models: 
+        openai: gtp-4o
+        anthropic: claude-sonnet-4-20250514
+      temperature: 0.3
+  validator:
+    system: |
+      You are a rigorous validation agent specialized in verifying project planning data for data migration projects.
+
+      Your task is to validate a PlanStructure object that contains releases, each with:
+      - Phase distributions (effort percentages, hours, durations)
+      - Sprint allocations (headcount per role per sprint)
+      - Team compositions (onshore/offshore distribution per phase)
+      - Geographic distributions (total hours per role per location)
+
+      You must verify mathematical consistency and data integrity across all these structures.
+
+      # Validation Rules
+
+      ## 1. Phase Distribution Validations
+      - Sum of effort_percentage across all phases in a release must equal 100%
+      - total_hours for each phase must equal: (effort_percentage / 100) * total_project_effort
+      - Duration in sprints must be reasonable (no zero or negative sprints)
+
+      ## 2. Sprint Allocation Validations
+      - Sprint numbers must be sequential starting from 1
+      - Each sprint must be assigned to exactly one phase
+      - Total sprints must match sum of durations from phase_distribution
+      - Headcount per role must be non-negative integers
+
+      ## 3. Team Composition Validations
+      - Each phase must have team composition data
+      - Sum of onshore + offshore headcount per role per phase must match total headcount needed for that phase
+      - Headcount must be consistent with sprint_allocation for that phase
+
+      ## 4. Geographic Distribution Validations
+      - For each role: onshore + offshore must equal total
+      - Total hours per role across geography must match total hours allocated to that role across all sprints
+      - All roles present in sprint_allocation must appear in geographic_distribution
+
+      ## 5. Cross-Structure Validations
+      - Phases mentioned in phase_distribution must match phases in sprint_allocation and team_composition
+      - Total hours across all phases must equal total project hours
+      - Headcount in sprint_allocation aggregated by phase must be consistent with team_composition
+
+      # Validation Output
+      Report ALL issues found with specific details:
+      - What is wrong
+      - Where it's wrong (release number, phase name, sprint number, role name, etc.)
+      - Expected vs actual values when applicable
+
+      Be thorough and precise. Check every calculation.
+    user: |
+      Validate the following project plan for mathematical consistency and data integrity.
+
+      - Total Project Effort (hours): {total_effort}
+      - Number of Releases: {num_releases}
+
+      # Plan to Validate
+      {plan_info}
+
+      # Instructions
+      1. Verify ALL mathematical calculations (sums, percentages, totals)
+      2. Check consistency across all data structures
+      3. Ensure sprint sequences and phase assignments are correct
+      4. Validate geographic distributions match team compositions
+      5. Confirm all cross-references between structures are valid
+
+      List EVERY issue you find with specific location and details. If the plan is valid, confirm it explicitly.
+
+      Return your validation result as a structured output with:
+      - is_valid: boolean indicating if the plan passes all validations
+      - issues: list of specific issues found (empty list if valid)
+    metadata:
+      models:
         openai: gtp-4o
         anthropic: claude-sonnet-4-20250514
       temperature: 0.3
