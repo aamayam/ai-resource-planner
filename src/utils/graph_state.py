@@ -17,7 +17,7 @@ class ProjectStructure(BaseModel):
     onshore_offshore_split: str = Field(
         default="30:70",
         description="Onshore/Offshore split for the team")
-    working_hours = int = Field(
+    working_hours: int = Field(
         default=160,
         description="Number of working hour per month")
     participation: str = Field(
